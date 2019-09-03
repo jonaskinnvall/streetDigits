@@ -5,7 +5,7 @@ import scipy.io as sio
 
 # Module imports
 from imPP import imagePP
-# from imNN import trainNN, testNN
+from imNN import compileNN, trainNN, testNN
 
 # Read .mat file
 trainMat = sio.loadmat('data/train_32x32.mat')
@@ -24,6 +24,9 @@ trainMat = sio.loadmat('data/train_32x32.mat')
 
 # Send trainMat to imagePP for pre-processing
 data = imagePP(trainMat)
+
+# # Send data for dimensions to compile NN
+# compileNN(data)
 
 # # Send training data with labels to NN
 # data, labels = trainNN()
