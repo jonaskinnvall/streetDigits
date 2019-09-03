@@ -1,3 +1,7 @@
 # Folders
 /sigTest
 /data
+
+# Misc
+.vscode
+__pycache__
