@@ -1,6 +1,9 @@
 # Folders
-/sigTest
-/data
+sigTest
+data
+
+# Models
+model.h5
 
 # Misc
 .vscode
