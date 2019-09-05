@@ -3,7 +3,7 @@
 import scipy.io as sio
 
 # Module imports
-from imNN import testNN
+from CNN import test
 
 # Read testfiles
 testMat = sio.loadmat('data/test_32x32.mat')
@@ -11,4 +11,4 @@ testMat = sio.loadmat('data/test_32x32.mat')
 images = testMat['X']
 labels = testMat['y']
 
-predictions = testNN(images, labels)
+predictions = test(images, labels)
