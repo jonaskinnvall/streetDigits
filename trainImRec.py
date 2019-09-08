@@ -19,9 +19,15 @@ labels = trainMat['y']
 images = images.astype('float32')
 images /= 255.0
 
+# Set 10s to 0s
+labels = np.where(labels == 10, 0, labels)
+print(np.min(labels))
+print(np.max(labels))
 # FIX THIS!!!!
+print("l un", np.unique(labels))
 labels = to_categorical(labels)
 print("l sha2", labels.shape)
+print("l un", np.unique(labels))
 
 # Split training set into training set and validation set
 trainIm, valIm, trainL, valL = train_test_split(images,
