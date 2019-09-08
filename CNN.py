@@ -1,8 +1,8 @@
 # Lib imports
 import numpy as np
-from keras.layers import (Input, Conv2D, Dense, Flatten,
-                          MaxPooling2D, Dropout, BatchNormalization)
 from keras.models import Model, load_model
+from keras.layers import (BatchNormalization, Conv2D, Dense, Dropout, Flatten,
+                          Input, MaxPooling2D)
 
 
 # Compile CNN function
@@ -25,9 +25,10 @@ def compile(image):
     cnn.compile('SGD', loss='categorical_crossentropy',
                 metrics=['accuracy'])
 
+    # Print summary of CNN model
     cnn.summary()
 
-    # Return model to SAVE it
+    # Return model
     return cnn
 
 
@@ -46,6 +47,21 @@ def train(data, labels, valData, valLabels):
     return cnn, history
 
 
-# Test CNN function
-def test(data, labels):
-    return data, labels
+# Evaluate CNN function
+def evaluate(data, labels):
+    # Load CNN model
+    cnn = load_model('./CNN.h5')
+
+    evaluation = cnn.evaluate(data, labels, batch_size=1024)
+
+    return evaluation
+
+
+# Predict digits with CNN
+def predict(data):
+    # Load CNN
+    cnn = load_model('./CNN.h5')
+
+    predictions = cnn.predict(data, batch_size=1024)
+
+    return predictions
