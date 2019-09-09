@@ -4,9 +4,7 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
-import pathlib
-
-
+from os import path
 # Module imports
 from CNN import compile, train
 
@@ -14,7 +12,6 @@ from CNN import compile, train
 trainMat = sio.loadmat('data/train_32x32.mat')
 
 images = trainMat['X']
-
 labels = trainMat['y']
 
 # Change layout of dimensions to fit CNN model and normalize values
@@ -32,17 +29,26 @@ trainIm, valIm, trainL, valL = train_test_split(images,
                                                 random_state=42)
 
 # If CNN model doesn't exist send data to compile NN
-if not pathlib.Path.exists('./CNN.h5'):
+if not path.exists('CNN2.h5'):
     CNNmodel = compile(trainIm[0, :, :, :])
-    CNNmodel.save('CNN.h5')
+    CNNmodel.save('CNN2.h5')
     CNNmodel.summary()
-    print('MODDEL COMPILED AND SAVED!')
+    print('MODEL COMPILED AND SAVED!')
 
 # Send training data with labels to NN
 CNNmodel, history = train(trainIm, trainL, valIm, valL)
 
-CNNmodel.save('CNN.h5')
+CNNmodel.save('CNN2.h5')
 print('MODEL TRAINED AND SAVED!')
+
+# Plot training & validation loss values
+plt.subplot(2, 1, 1)
+plt.plot(history['loss'])
+plt.plot(history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
 
 # Plot training & validation accuracy values
 plt.figure(1)
@@ -51,15 +57,6 @@ plt.plot(history['acc'])
 plt.plot(history['val_acc'])
 plt.title('Model accuracy')
 plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
-
-# Plot training & validation loss values
-plt.subplot(2, 2, 2)
-plt.plot(history['loss'])
-plt.plot(history['val_loss'])
-plt.title('Model loss')
-plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()

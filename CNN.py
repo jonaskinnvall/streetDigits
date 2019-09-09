@@ -1,25 +1,29 @@
 # Lib imports
-import numpy as np
+# import numpy as np
 from keras.models import Model, load_model
-from keras.layers import (BatchNormalization, Conv2D, Dense, Dropout, Flatten,
-                          Input, MaxPooling2D)
+from keras.layers import (Input, Conv2D, Dense, Flatten,
+                          MaxPooling2D, Dropout)
 
 
 # Compile CNN function
 def compile(image):
 
-    # input_shape = image.shape
+    # print(image.shape)
 
     input = Input(shape=image.shape)
-    conv = Conv2D(64, (3, 3), activation='relu')(input)
+    conv = Conv2D(32, (4, 4), padding='same', activation='relu')(input)
     pool = MaxPooling2D()(conv)
-    flat = Flatten()(pool)
-    dense = Dense(100, activation='relu')(flat)
-    dense = Dense(10, activation='softmax')(dense)
-    # dense = Dense(1, activation='softmax')(dense)
+    conv2 = Conv2D(64, (4, 4), padding='valid', activation='relu')(pool)
+    pool2 = MaxPooling2D()(conv2)
+    flat = Flatten()(pool2)
+    dense = Dense(1024, activation='relu')(flat)
+    dense2 = Dense(256, activation='relu')(dense)
+    dense3 = Dense(64, activation='relu')(dense2)
+    drop = Dropout(0.3)(dense3)
+    dense3 = Dense(10, activation='softmax')(drop)
 
     # Create model
-    cnn = Model(inputs=input, outputs=dense)
+    cnn = Model(inputs=input, outputs=dense3)
 
     # Compile model
     cnn.compile('SGD', loss='categorical_crossentropy',
@@ -35,11 +39,11 @@ def compile(image):
 # Train CNN function
 def train(data, labels, valData, valLabels):
     # Load CNN model
-    cnn = load_model('./CNN.h5')
+    cnn = load_model('CNN2.h5')
 
     # Train CNN model
-    n_epochs = 5
-    b_size = 1024
+    n_epochs = 600
+    b_size = 256
     history = cnn.fit(data, labels, batch_size=b_size,
                       epochs=n_epochs, verbose=1,
                       validation_data=(valData, valLabels)).history
@@ -50,7 +54,7 @@ def train(data, labels, valData, valLabels):
 # Evaluate CNN function
 def evaluate(data, labels):
     # Load CNN model
-    cnn = load_model('./CNN.h5')
+    cnn = load_model('CNN.h5')
 
     evaluation = cnn.evaluate(data, labels, batch_size=1024)
 
@@ -60,7 +64,7 @@ def evaluate(data, labels):
 # Predict digits with CNN
 def predict(data):
     # Load CNN
-    cnn = load_model('./CNN.h5')
+    cnn = load_model('CNN.h5')
 
     predictions = cnn.predict(data, batch_size=1024)
 
