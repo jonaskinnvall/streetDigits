@@ -2,6 +2,17 @@
 
 Detecting single digits in 32x32 images from Format 2 The Street View House Numbers (SVHN).
 
+Using virtualenv named SigTest. The virtualenv can be activated by running terminal command
+"source sigTest/bin/activate" when in the repositories folder. The virtualenv can be
+deactivated by running termnial command "deactivate" within same folder as activated.
+
+Run terminal command "python trainCNN.py" to train model. If chosen model to train doesn't already
+exists a model will first be compiled and save in the chosen name and then trained and
+saved again. - Make sure paths for compile and train match what you want -
+
+Run terminal command "python testCNN.py" to test model. Make sure function "test" in CNN.py has
+a matching path to the model you want tested.
+
 ## Method
 
 Using Keras with Tensorflow backend to create a Convolutional Neural Network (CNN) which
