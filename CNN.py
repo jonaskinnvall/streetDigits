@@ -9,8 +9,6 @@ from keras.layers import (Input, Conv2D, Dense, Flatten,
 # Compile CNN function
 def compile(image):
 
-    # print(image.shape)
-
     input = Input(shape=image.shape)
     conv = Conv2D(32, (4, 4), padding='same', activation='relu')(input)
     pool = MaxPooling2D()(conv)
@@ -47,7 +45,7 @@ def train(data, labels, valData, valLabels):
     n_epochs = 600
     b_size = 256
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
-    mc = ModelCheckpoint('./models/bestSparseCNN2.h5', monitor='val_acc', mode='max',
+    mc = ModelCheckpoint('./bestmodels/bestSparseCNN2.h5', monitor='val_acc', mode='max',
                          verbose=1, save_best_only=True)
     callbacks = [es, mc]
     history = cnn.fit(data, labels, batch_size=b_size,
@@ -61,7 +59,7 @@ def train(data, labels, valData, valLabels):
 # Evaluate CNN function
 def evaluate(data, labels):
     # Load CNN model
-    cnn = load_model('./models/bestSparseCNN.h5')
+    cnn = load_model('./bestmodels/bestSparseCNN.h5')
 
     evaluation = cnn.evaluate(data, labels, batch_size=1024)
 
@@ -71,7 +69,7 @@ def evaluate(data, labels):
 # Predict digits with CNN
 def predict(data):
     # Load CNN
-    cnn = load_model('./models/bestSparseCNN.h5')
+    cnn = load_model('./bestmodels/bestCheckCNN.h5')
 
     predictions = cnn.predict(data, batch_size=1024)
 

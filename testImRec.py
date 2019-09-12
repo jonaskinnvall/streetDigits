@@ -25,39 +25,34 @@ labels = labels.astype('float32')
 # labels = to_categorical(labels)
 
 # Let user choose if they want to evaluate CNN or use it to predict digits
-print("Do you want to evaluate CNN or predict digits with CNN?")
-response = None
-while response not in {"e", "p"}:
-    response = input("Please enter 'e' or 'p': ")
+# print("Do you want to evaluate CNN or predict digits with CNN?")
+# response = None
+# while response not in {"e", "p"}:
+#     response = input("Please enter 'e' or 'p': ")
 
 # Call evaluate function
-if response == 'e':
-    evaluation = evaluate(images, labels)
-    print('test loss, test acc:', evaluation)
-
-    # print('Accuracy: mean=%.3f std=%.3f, n=%d' %
-    #       (np.mean(acc) * 100, np.std(acc) * 100,
-    #        len(acc)))
-
-    # # box and whisker plots of results
-    # plt.boxplot(acc)
-    # plt.show()
+# if response == 'e':
+evaluation = evaluate(images, labels)
+print('TEST LOSS, TEST ACC:', evaluation)
 
 # Call prediction function
-elif response == 'p':
-    predictions = predict(images)
-    print('Preds', predictions.shape)
-    print('Preds', predictions)
-    # Create ROC curve and from that AUC
-    auc_score = roc_auc_score(images, predictions)
-    print('AUC', auc_score)
-    # auc = auc(fpr, tpr)
+# elif response == 'p':
+#     predictions = predict(images)
+#     print('Preds', predictions.shape)
+# print('Preds', predictions)
 
-    # plt.figure(1)
-    # plt.plot([0, 1], [0, 1], 'k--')
-    # plt.plot(fpr, tpr, label='Keras (area = {:.3f})'.format(auc))
-    # plt.xlabel('False positive rate')
-    # plt.ylabel('True positive rate')
-    # plt.title('ROC curve')
-    # plt.legend(loc='best')
-    # plt.show()
+# Create ROC curve and from that AUC
+# auc_score = roc_auc_score(labels, predictions)
+# print('AUC', auc_score)
+# fpr, tpr, thresholds = roc_curve(labels, predictions, pos_label=10)
+# auc = auc(fpr, tpr)
+# print('AUC:', auc)
+
+# plt.figure(1)
+# plt.plot([0, 1], [0, 1], 'k--')
+# plt.plot(fpr, tpr, label='Keras (area = {:.3f})'.format(auc))
+# plt.xlabel('False positive rate')
+# plt.ylabel('True positive rate')
+# plt.title('ROC curve')
+# plt.legend(loc='best')
+# plt.show()
