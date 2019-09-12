@@ -21,7 +21,9 @@ images /= 255.0
 
 # Set 10s to 0s and change labels to binary class matrix
 labels = np.where(labels == 10, 0, labels)
-labels = to_categorical(labels)
+labels = labels.astype('float32')
+# labels /= 10.0
+# labels = to_categorical(labels)
 
 # Split training set into training set and validation set
 trainIm, valIm, trainL, valL = train_test_split(images,
@@ -29,16 +31,16 @@ trainIm, valIm, trainL, valL = train_test_split(images,
                                                 random_state=42)
 
 # If CNN model doesn't exist send data to compile NN
-if not path.exists('CNN2.h5'):
+if not path.exists('./models/CNNspars2.h5'):
     CNNmodel = compile(trainIm[0, :, :, :])
-    CNNmodel.save('CNN2.h5')
+    CNNmodel.save('./models/CNNsparse2.h5')
     CNNmodel.summary()
     print('MODEL COMPILED AND SAVED!')
 
 # Send training data with labels to NN
 CNNmodel, history = train(trainIm, trainL, valIm, valL)
 
-CNNmodel.save('CNN2.h5')
+CNNmodel.save('./models/CNNsparse2.h5')
 print('MODEL TRAINED AND SAVED!')
 
 # Plot training & validation loss values

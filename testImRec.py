@@ -3,6 +3,7 @@ import numpy as np
 import scipy.io as sio
 import matplotlib.pyplot as plt
 from keras.utils import to_categorical
+from sklearn.metrics import roc_curve, auc, roc_auc_score
 
 # Module imports
 from CNN import evaluate, predict
@@ -20,7 +21,8 @@ images /= 255.0
 
 # Change 10s to 0s and change labels to binary class matrix
 labels = np.where(labels == 10, 0, labels)
-labels = to_categorical(labels)
+labels = labels.astype('float32')
+# labels = to_categorical(labels)
 
 # Let user choose if they want to evaluate CNN or use it to predict digits
 print("Do you want to evaluate CNN or predict digits with CNN?")
@@ -31,8 +33,8 @@ while response not in {"e", "p"}:
 # Call evaluate function
 if response == 'e':
     evaluation = evaluate(images, labels)
-    print('Eval loss:', evaluation)
-    # print summary
+    print('test loss, test acc:', evaluation)
+
     # print('Accuracy: mean=%.3f std=%.3f, n=%d' %
     #       (np.mean(acc) * 100, np.std(acc) * 100,
     #        len(acc)))
@@ -45,3 +47,17 @@ if response == 'e':
 elif response == 'p':
     predictions = predict(images)
     print('Preds', predictions.shape)
+    print('Preds', predictions)
+    # Create ROC curve and from that AUC
+    auc_score = roc_auc_score(images, predictions)
+    print('AUC', auc_score)
+    # auc = auc(fpr, tpr)
+
+    # plt.figure(1)
+    # plt.plot([0, 1], [0, 1], 'k--')
+    # plt.plot(fpr, tpr, label='Keras (area = {:.3f})'.format(auc))
+    # plt.xlabel('False positive rate')
+    # plt.ylabel('True positive rate')
+    # plt.title('ROC curve')
+    # plt.legend(loc='best')
+    # plt.show()
