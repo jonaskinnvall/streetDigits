@@ -69,7 +69,7 @@ def evaluate(data, labels):
 # Predict digits with CNN
 def predict(data):
     # Load CNN
-    cnn = load_model('./bestmodels/bestCheckCNN.h5')
+    cnn = load_model('./bestmodels/bestSparseCNN.h5')
 
     predictions = cnn.predict(data, batch_size=1024)
 
