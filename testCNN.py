@@ -33,7 +33,8 @@ labels = labels.astype('float32')
 # Call evaluate function
 # if response == 'e':
 evaluation = evaluate(images, labels)
-print('TEST LOSS, TEST ACC:', evaluation)
+# print('TEST LOSS, TEST ACC:', evaluation[0])
+print('TEST LOSS: %.3f, TEST ACC: %.3f%%' % (evaluation[0], evaluation[1]*100))
 
 # Call prediction function
 # elif response == 'p':
