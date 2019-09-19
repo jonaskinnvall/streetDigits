@@ -10,14 +10,13 @@ from keras.layers import (Input, Conv2D, Dense, Flatten,
 def compile(image):
 
     input = Input(shape=image.shape)
-    conv = Conv2D(32, (4, 4), padding='same', activation='relu')(input)
-    pool = MaxPooling2D()(conv)
-    conv2 = Conv2D(64, (4, 4), padding='valid', activation='relu')(pool)
-    pool2 = MaxPooling2D()(conv2)
-    flat = Flatten()(pool2)
-    dense = Dense(1024, activation='relu')(flat)
-    dense2 = Dense(256, activation='relu')(dense)
-    dense3 = Dense(64, activation='relu')(dense2)
+    conv = Conv2D(32, (8, 8), padding='same', activation='relu')(input)
+    pool = MaxPooling2D((4, 4))(conv)
+    # conv2 = Conv2D(64, (4, 4), padding='valid', activation='relu')(pool)
+    # pool2 = MaxPooling2D()(conv2)
+    flat = Flatten()(pool)
+    dense = Dense(128, activation='relu')(flat)
+    dense3 = Dense(64, activation='relu')(dense)
     drop = Dropout(0.3)(dense3)
     dense4 = Dense(10, activation='softmax')(drop)
     # dense5 = Dense(1, activation='softmax')(dense4)
@@ -26,11 +25,8 @@ def compile(image):
     cnn = Model(inputs=input, outputs=dense4)
 
     # Compile model
-    cnn.compile('SGD', loss='sparse_categorical_crossentropy',
+    cnn.compile('SGD', loss='categorical_crossentropy',
                 metrics=['accuracy'])
-
-    # Print summary of CNN model
-    cnn.summary()
 
     # Return model
     return cnn
@@ -39,13 +35,13 @@ def compile(image):
 # Train CNN function
 def train(data, labels, valData, valLabels):
     # Load CNN model
-    cnn = load_model('./models/CNNsparse2.h5')
+    cnn = load_model('./bestmodels/bestSingleCNNOF.h5')
 
     # Train CNN model
-    n_epochs = 600
-    b_size = 256
+    n_epochs = 300
+    b_size = 1024
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=50)
-    mc = ModelCheckpoint('./bestmodels/bestSparseCNN2.h5', monitor='val_acc', mode='max',
+    mc = ModelCheckpoint('./bestmodels/bestSingleCNN.h5', monitor='val_acc', mode='max',
                          verbose=1, save_best_only=True)
     callbacks = [es, mc]
     history = cnn.fit(data, labels, batch_size=b_size,
@@ -59,9 +55,10 @@ def train(data, labels, valData, valLabels):
 # Evaluate CNN function
 def evaluate(data, labels):
     # Load CNN model
-    cnn = load_model('./bestmodels/bestSparseCNN.h5')
+    cnn = load_model('./bestmodels/bestSingleCNN.h5')
+    # cnn.summary()
 
-    evaluation = cnn.evaluate(data, labels, batch_size=1024)
+    evaluation = cnn.evaluate(data, labels, batch_size=256)
 
     return evaluation
 
@@ -69,7 +66,8 @@ def evaluate(data, labels):
 # Predict digits with CNN
 def predict(data):
     # Load CNN
-    cnn = load_model('./bestmodels/bestSparseCNN.h5')
+    cnn = load_model('./bestmodels/bestSingleCNN.h5')
+    # cnn.summary()
 
     predictions = cnn.predict(data, batch_size=1024)
 
