@@ -1,6 +1,5 @@
 # Lib imports
 import numpy as np
-import pandas as pd
 import scipy.io as sio
 import matplotlib.pyplot as plt
 from keras.utils import to_categorical
@@ -41,14 +40,20 @@ if response == 'e':
 
 # Call prediction function
 elif response == 'p':
+    # Predict digits in images
     predictions = predict(images)
+
+    # Pick out index of highest value in each array from predictions and labels
     digits = np.argmax(predictions, axis=1)
     true = np.argmax(labels, axis=1)
-    print('dig', digits.shape)
-    print('\n Conf Mat \n =============== \n',
-          confusion_matrix(true, digits))
-    print('\n Class Rep \n =============== \n',
-          classification_report(true, digits))
+
+    # Create and print confusion matrix and classification report for predictions
+    conf_mat = confusion_matrix(true, digits)
+    class_rep = classification_report(true, digits)
+    print('\n Conf Mat \n =============== \n', conf_mat)
+    print('\n Class Rep \n =============== \n', class_rep)
+
+    # Print histograms that shows amount for each prediction and label
     # plt.figure(1)
     # plt.subplot(2, 1, 1)
     # plt.hist(digits, bins=10)
